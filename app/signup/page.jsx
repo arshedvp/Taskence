@@ -38,13 +38,12 @@ export default function SignUpPage() {
       } else {
         const data = await res.json();
         setError(data.message || "Signup failed. Username may already be taken.");
+        setLoading(false);
       }
     } catch (err) {
         console.error("Signup error:", err);
         setError("An unexpected error occurred.");
-    } finally {
-        // We don't set loading to false on success because we're redirecting.
-        if(!res.ok) setLoading(false);
+        setLoading(false);
     }
   };
 

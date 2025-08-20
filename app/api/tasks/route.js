@@ -20,8 +20,8 @@ export async function POST(request) {
   const { title, description, status, isImportant, category } = await request.json();
 
     // Validation (optional but recommended)
-    if (!title?.trim() || !description?.trim()) {
-      return NextResponse.json({ error: 'Title and description required' }, { status: 400 });
+    if (!title?.trim()) {
+      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
     }
 
     // If signed in with Google, write to user's Google Drive appData
@@ -37,7 +37,7 @@ export async function POST(request) {
         const newTask = {
           _id: (globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2)),
           title: title.trim(),
-          description: description.trim(),
+          description: description?.trim?.() || '',
           status: status || 'Pending',
           isImportant: !!isImportant,
           category: category || 'General',
@@ -75,7 +75,7 @@ export async function POST(request) {
     const task = await Task.create({
       creator: user._id,
       title: title.trim(),
-      description: description.trim(),
+  description: description?.trim?.() || '',
       status: status || 'Pending',
       isImportant: !!isImportant,
       category: category || 'General',
