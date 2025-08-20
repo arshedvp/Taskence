@@ -5,6 +5,9 @@ import connectToDatabase from '@/utils/db';
 import User from '@/models/User';
 import bcrypt from 'bcryptjs';
 
+// Ensure this route runs on the Node.js runtime (not Edge)
+export const runtime = 'nodejs';
+
 export const authOptions = {
   session: {
     strategy: 'jwt',

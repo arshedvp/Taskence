@@ -159,8 +159,20 @@ If you encounter JWT decryption errors:
 
 1. Push your code to a Git repository
 2. Import your project on [Vercel](https://vercel.com)
-3. Add your environment variables in Vercel's dashboard
-4. Deploy
+3. Add your environment variables in Vercel's dashboard (Production and Preview)
+   - `MONGODB_URI`
+   - `NEXTAUTH_SECRET`
+   - `NEXTAUTH_URL` = your production URL (only in Production)
+   - `AUTH_TRUST_HOST` = `true` (recommended to simplify previews)
+   - `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
+4. In Google Cloud Console → OAuth client, add:
+   - Authorized origins: your production URL, and optionally preview `https://*.vercel.app`
+   - Redirect URIs: `https://your-app.vercel.app/api/auth/callback/google` and optionally preview callback
+5. Deploy
+
+If your API routes or NextAuth fail on Vercel, check Functions logs and confirm env vars are present. Ensure Atlas IP allowlist includes 0.0.0.0/0 or your egress IP.
+
+Security note: never commit `.env.local`. If secrets leaked, rotate in MongoDB Atlas, Google Cloud, and update Vercel.
 
 ### Environment Variables for Production
 

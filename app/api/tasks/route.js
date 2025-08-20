@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+export const runtime = 'nodejs';
 import connectToDatabase from '@/utils/db'; // your db connector
 import Task from '@/models/Task'; // your Task model
 import User from '@/models/User'; 
