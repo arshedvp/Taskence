@@ -20,8 +20,6 @@ async function connectToDatabase() {
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, {
       dbName: "tasks",
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
     }).then(mongoose => {
       return mongoose;
     });
