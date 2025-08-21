@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import connectToDatabase from '@/utils/db';
-
 import User from '@/models/User';
+
+export const runtime = 'nodejs';
 
 export async function POST(request) {
   try {

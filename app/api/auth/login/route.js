@@ -4,6 +4,7 @@ import connectToDatabase from '@/utils/db';
 import User from '@/models/User';
 import bcrypt from 'bcryptjs';
 
+export const runtime = 'nodejs';
 
 export async function POST(request) {
   try {
