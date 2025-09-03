@@ -19,12 +19,16 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Invalid request body', details: e.message }, { status: 400 });
     }
 
-    const { username, password } = body;
+    const { username, password, confirmPassword } = body;
     console.log('Username:', username, 'Has password:', !!password);
 
     if (!username || !password) {
       console.log('✗ Missing credentials');
       return NextResponse.json({ error: 'Username and password are required' }, { status: 400 });
+    }
+    if (password !== confirmPassword) {
+      console.log('✗ Passwords do not match');
+      return NextResponse.json({ error: 'Passwords do not match' }, { status: 400 });
     }
 
     // Test 2: Environment variables check

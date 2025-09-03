@@ -7,7 +7,7 @@ export default function TaskModal({
   onClose,
   onSubmit,
   mode = "add",
-  task = {}
+  task = null
 }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -34,7 +34,8 @@ export default function TaskModal({
         setCategory("General");
       }
     }
-  }, [isOpen, mode, task?._id]); // Using task._id makes the dependency stable
+  // Depend on a stable signature: modal open state, mode, and a stable task id (prevents resets while typing)
+  }, [isOpen, mode, task ? task._id : undefined]);
 
   const categoryOptions = [
     { value: "General", label: "General" },
@@ -52,7 +53,7 @@ export default function TaskModal({
     if (!title.trim()) return;
 
     onSubmit({
-      ...task, // Pass existing task data, including _id if editing
+      ...(task ? { _id: task._id } : {}),
       title: title.trim(),
       description: description.trim(),
       status,

@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import TaskModal from '../components/AddTaskModal.jsx';
@@ -65,12 +65,27 @@ export default function Home() {
     }
   }, [status, router]);
 
+  const fetchTasks = useCallback(async () => {
+    try {
+      const params = new URLSearchParams();
+      if (statusFilter) params.append('status', statusFilter);
+      if (debouncedSearchTerm) params.append('search', debouncedSearchTerm);
+      const res = await fetch(`/api/tasks?${params.toString()}`);
+      if (res.ok) {
+        const data = await res.json();
+        setTasks(data.tasks || []);
+      }
+    } catch (error) {
+      console.error('Failed to fetch tasks:', error);
+    }
+  }, [statusFilter, debouncedSearchTerm]);
+
   useEffect(() => {
     if (status === 'authenticated') {
       fetchTasks();
     }
     setCurrentPage(1);
-  }, [status, statusFilter, debouncedSearchTerm]);
+  }, [status, fetchTasks]);
 
 
   async function fetchStats() {
@@ -90,25 +105,7 @@ export default function Home() {
     }
   }
 
-  async function fetchTasks() {
-    try {
-      const params = new URLSearchParams();
-      if (statusFilter) {
-        params.append('status', statusFilter);
-      }
-      if (debouncedSearchTerm) {
-        params.append('search', debouncedSearchTerm);
-      }
-
-      const res = await fetch(`/api/tasks?${params.toString()}`);
-      if (res.ok) {
-        const data = await res.json();
-        setTasks(data.tasks || []);
-      }
-    } catch (error) {
-      console.error('Failed to fetch tasks:', error);
-    }
-  }
+  // fetchTasks moved above and memoized with useCallback
 
   // --- All mutation functions (add, delete, update) remain the same ---
   // ...

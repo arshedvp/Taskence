@@ -132,7 +132,7 @@ export default function LoginPage() {
             onClick={() => signIn('google', { callbackUrl: '/' })}
             className="w-full flex items-center justify-center gap-2 py-2.5 cursor-pointer border border-gray-300 rounded-lg hover:bg-gray-50 transition"
           >
-            <img src="/icons/google.svg" alt="Google" width="18" height="18" />
+            <Image src="/icons/google.svg" alt="Google" width={18} height={18} />
             <span className="text-sm text-gray-700">Continue with Google</span>
           </button>
         </div>
